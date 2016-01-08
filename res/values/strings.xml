@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TouchLogger</string>
+    <string name="notification_title">TouchLogger</string>
+    <string name="notification_status_inprogress">In progress</string>
+    <string name="notification_status_paused">Paused</string>
+    <string name="notification_action_play">Play</string>
+    <string name="notification_action_pause">Pause</string>
+    <string name="start_service">Start service</string>
+    <string name="stop_service">Stop service</string>
+</resources>
