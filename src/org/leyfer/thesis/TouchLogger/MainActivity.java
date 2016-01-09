@@ -1,10 +1,14 @@
 package org.leyfer.thesis.TouchLogger;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.*;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import org.leyfer.thesis.TouchLogger.receiver.UploadReceiver;
 import org.leyfer.thesis.TouchLogger.service.TouchReaderService;
 
 public class MainActivity extends Activity {
@@ -45,6 +49,7 @@ public class MainActivity extends Activity {
                 startService(mIntent);
             }
         });
+        setAlarm();
     }
 
     @Override
@@ -54,6 +59,20 @@ public class MainActivity extends Activity {
             registered = false;
         }
         super.onStop();
+    }
+
+
+    private void setAlarm() {
+        AlarmManager alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent uploadGesturesIntent = new Intent(UploadReceiver.UPLOAD_GESTURES);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, uploadGesturesIntent, 0);
+
+        alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                30 * 1000,
+                30 * 1000,
+                pendingIntent);
+
+        Log.d("TouchLogger", "Start alarm clock");
     }
 
     private void setStop() {

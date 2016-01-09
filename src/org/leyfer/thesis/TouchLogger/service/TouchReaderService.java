@@ -2,11 +2,15 @@ package org.leyfer.thesis.TouchLogger.service;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.leyfer.thesis.TouchLogger.MainActivity;
+import org.leyfer.thesis.TouchLogger.TouchSaver;
 import org.leyfer.thesis.TouchLogger.helper.DeviceTouchConfig;
 import org.leyfer.thesis.TouchLogger.helper.MotionEventConstructor;
 import org.leyfer.thesis.TouchLogger.config.TouchConfig;
@@ -31,6 +35,9 @@ public class TouchReaderService extends IntentService {
     private boolean mActive = true;
     private NotificationManager mNotificationManager;
     private boolean isRunning = true;
+    private JSONObject mGesture;
+    private JSONArray mEvents;
+    private long mStartGestureTime;
 
     public TouchReaderService() {
         super("TouchReaderService");
@@ -41,11 +48,13 @@ public class TouchReaderService extends IntentService {
         super.onCreate();
         mNotification = new WatchNotification(getApplicationContext());
         mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        mGesture = new JSONObject();
+        mEvents = new JSONArray();
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        readAndParseTouches();
+        readAndParseTouches(getApplicationContext());
     }
 
     private void killGetevent() {
@@ -56,7 +65,7 @@ public class TouchReaderService extends IntentService {
             os.writeBytes(command + "\n");
             os.close();
         } catch (IOException e) {
-            Log.e("TestLogger", e.getMessage());
+            Log.e("TouchLogger", e.getMessage());
         }
     }
 
@@ -95,7 +104,7 @@ public class TouchReaderService extends IntentService {
         return START_NOT_STICKY;
     }
 
-    private void readAndParseTouches() {
+    private void readAndParseTouches(Context context) {
         MotionEventConstructor eventConstructor;
 
         TouchConfig config = DeviceTouchConfig.configMap.get(String.format("%s,%s", Build.BOARD, Build.MODEL));
@@ -150,7 +159,7 @@ public class TouchReaderService extends IntentService {
                     length = strings.length - 1;
                 }
                 for (i = 0; i < length; i++) {
-                    parseRawTouchEvent(eventConstructor, strings[i]);
+                    parseRawTouchEvent(context, eventConstructor, strings[i]);
                 }
             }
 
@@ -158,15 +167,29 @@ public class TouchReaderService extends IntentService {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (Exception e) {
-            Log.e("TestLogger", e.getMessage());
+            Log.e("TouchLogger", e.getMessage());
         }
     }
 
-    private void parseRawTouchEvent(MotionEventConstructor constructor, String rawTouchEvent) throws JSONException {
+    private void parseRawTouchEvent(Context context, MotionEventConstructor constructor, String rawTouchEvent) throws JSONException {
         constructor.update(rawTouchEvent);
         if (constructor.isMotionEventReady()) {
-            if (mActive) {
-                Log.d("TestLogger", constructor.getMotionEvent().toString());
+            JSONObject event = constructor.getMotionEvent();
+            mEvents.put(event);
+
+            String prefix = event.getString("prefix");
+            if (prefix.equals("DOWN")) {
+                mStartGestureTime = System.currentTimeMillis();
+            } else if (prefix.equals("UP")) {
+                mGesture.put("timestamp", System.currentTimeMillis());
+                mGesture.put("length", System.currentTimeMillis() - mStartGestureTime);
+                mGesture.put("events", mEvents);
+                if (mActive) {
+                    TouchSaver.getInstance(context).saveGesture(mGesture);
+                }
+
+                mEvents = new JSONArray();
+                mGesture = new JSONObject();
             }
         }
     }

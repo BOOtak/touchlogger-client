@@ -152,7 +152,7 @@ public class MotionEventConstructor {
                 }
             }
         } catch (Exception e) {
-            Log.e("TestLogger", e.getMessage());
+            Log.e("TouchLogger", e.getMessage());
             throw new RuntimeException("Bad parser");
         }
     }
