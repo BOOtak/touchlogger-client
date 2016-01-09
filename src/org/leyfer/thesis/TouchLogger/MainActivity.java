@@ -17,6 +17,7 @@ public class MainActivity extends Activity {
     private Button mButton;
     private Intent mIntent;
     private SharedPreferences preferences;
+    private boolean registered = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,7 @@ public class MainActivity extends Activity {
 
         IntentFilter intentFilter = new IntentFilter(ACTION_SERVICE_STATE);
         registerReceiver(touchServiceStateReceiver, intentFilter);
+        registered = true;
 
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,7 +49,10 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onStop() {
-        unregisterReceiver(touchServiceStateReceiver);
+        if (registered) {
+            unregisterReceiver(touchServiceStateReceiver);
+            registered = false;
+        }
         super.onStop();
     }
 
