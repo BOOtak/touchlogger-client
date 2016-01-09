@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 import org.json.JSONException;
+import org.leyfer.thesis.TouchLogger.MainActivity;
 import org.leyfer.thesis.TouchLogger.helper.DeviceTouchConfig;
 import org.leyfer.thesis.TouchLogger.helper.MotionEventConstructor;
 import org.leyfer.thesis.TouchLogger.config.TouchConfig;
@@ -76,11 +77,19 @@ public class TouchReaderService extends IntentService {
             mActive = true;
             startForeground(WatchNotification.NOTIFICATION_ID,
                     mNotification.getNotification(NotificationAction.ACTION_INPROGRESS));
+            sendBroadcast(
+                    new Intent(MainActivity.ACTION_SERVICE_STATE)
+                            .putExtra(MainActivity.SERVICE_ISRUNNING_EXTRA, true)
+            );
         } else if (ACTION_STOP.equals(action)) {
             mActive = false;
             isRunning = false;
             killGetevent();
             mNotificationManager.cancel(WatchNotification.NOTIFICATION_ID);
+            sendBroadcast(
+                    new Intent(MainActivity.ACTION_SERVICE_STATE)
+                            .putExtra(MainActivity.SERVICE_ISRUNNING_EXTRA, false)
+            );
         }
 
         return START_NOT_STICKY;
