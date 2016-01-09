@@ -133,10 +133,6 @@ public class TouchReaderService extends IntentService {
                     result.append(strings[strings.length - 1]);
                 }
 
-                if (!mActive) {
-                    continue;
-                }
-
                 int i;
                 int length;
                 if (isStringcompleted) {
@@ -160,7 +156,9 @@ public class TouchReaderService extends IntentService {
     private void parseRawTouchEvent(MotionEventConstructor constructor, String rawTouchEvent) throws JSONException {
         constructor.update(rawTouchEvent);
         if (constructor.isMotionEventReady()) {
-            Log.d("TestLogger", constructor.getMotionEvent().toString());
+            if (mActive) {
+                Log.d("TestLogger", constructor.getMotionEvent().toString());
+            }
         }
     }
 }
