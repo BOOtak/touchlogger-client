@@ -103,7 +103,7 @@ public class MotionEventConstructor {
         }
 
         String[] rawParts = rawTouchEvent.split("] ");
-        String[] rawTimestampParts = rawParts[0].split(" ");
+        String[] rawTimestampParts = (rawParts[0].split("\\["))[1].split(" ");
         String[] timestampParts = rawTimestampParts[rawTimestampParts.length - 1].split("\\.");
         Long timestamp = Long.parseLong(timestampParts[0]) * 1000 + Long.parseLong(timestampParts[1]) / 1000;
 
