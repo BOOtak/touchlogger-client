@@ -67,9 +67,9 @@ public class MainActivity extends Activity {
         Intent uploadGesturesIntent = new Intent(UploadReceiver.UPLOAD_GESTURES);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, uploadGesturesIntent, 0);
 
-        alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                30 * 1000,
-                30 * 1000,
+        alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
+                30 * 60 * 1000,
+                30 * 60 * 1000,
                 pendingIntent);
 
         Log.d("TouchLogger", "Start alarm clock");
