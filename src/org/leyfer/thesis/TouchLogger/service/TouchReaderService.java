@@ -107,7 +107,8 @@ public class TouchReaderService extends IntentService {
     private void readAndParseTouches(Context context) {
         MotionEventConstructor eventConstructor;
 
-        TouchConfig config = DeviceTouchConfig.configMap.get(String.format("%s,%s", Build.BOARD, Build.MODEL));
+        TouchConfig config = DeviceTouchConfig.configMap.get(
+                String.format("%s,%s", Build.BOARD, Build.MODEL).toUpperCase());
         if (config == null) {
             throw new RuntimeException("bad device");
         }

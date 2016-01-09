@@ -35,9 +35,9 @@ public class DeviceTouchConfig {
     );
 
     public static final Map<String, TouchConfig> configMap = new HashMap<String, TouchConfig>() {{
-        put("hammerhead,Nexus 5", hammerhead_Nexus_5_Config);
-        put("hammerhead,AOSP on HammerHead", hammerhead_Nexus_5_Config);
-        put("universal5420,SM-N900", MSM8974_SM_N900_Config);
+        put("HAMMERHEAD,NEXUS 5", hammerhead_Nexus_5_Config);
+        put("HAMMERHEAD,AOSP ON HAMMERHEAD", hammerhead_Nexus_5_Config);
+        put("UNIVERSAL5420,SM-N900", MSM8974_SM_N900_Config);
         put("MSM8974,SM-N9005", MSM8974_SM_N900_Config);
         put("MSM8974,LG-D802", MSM8974_LG_D802_Config);
     }};
