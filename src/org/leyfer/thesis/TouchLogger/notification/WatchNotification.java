@@ -6,35 +6,49 @@ import android.content.Context;
 import android.content.Intent;
 import org.leyfer.thesis.TouchLogger.MainActivity;
 import org.leyfer.thesis.TouchLogger.R;
-import org.leyfer.thesis.TouchLogger.notification.helper.NotificationActionEnum;
+import org.leyfer.thesis.TouchLogger.notification.helper.NotificationAction;
+import org.leyfer.thesis.TouchLogger.service.TouchReaderService;
 
 public class WatchNotification {
 
     public static final int NOTIFICATION_ID = 33789;
 
-    public WatchNotification(Context context, NotificationActionEnum action) {
-        Notification.Builder builder = new Notification.Builder(context)
+    private Notification mActiveNotification;
+    private Notification mInactiveNotification;
+
+    public WatchNotification(Context context) {
+        Intent resumeIntent = new Intent(context, TouchReaderService.class);
+        resumeIntent.setAction(TouchReaderService.ACTION_RESUME);
+
+        Intent pauseIntent = new Intent(context, TouchReaderService.class);
+        pauseIntent.setAction(TouchReaderService.ACTION_PAUSE);
+
+        mActiveNotification = new Notification.Builder(context)
                 .setSmallIcon(android.R.drawable.ic_media_play)
                 .setContentTitle(context.getString(R.string.app_name))
-                .setContentIntent(PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0));
-        if (action == NotificationActionEnum.ACTION_INPROGRESS) {
-            builder.setContentText(context.getString(R.string.notification_status_inprogress))
-                    .addAction(android.R.drawable.ic_media_pause,
-                            context.getString(R.string.notification_action_pause),
-                            PendingIntent.getService(context, 0, new Intent(context, MainActivity.class), 0));
-        } else {
-            builder.setContentText(context.getString(R.string.notification_status_paused))
-                    .addAction(android.R.drawable.ic_media_play,
-                            context.getString(R.string.notification_action_play),
-                            PendingIntent.getService(context, 0, new Intent(context, MainActivity.class), 0));
-        }
+                .setContentIntent(PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0))
+                .setContentText(context.getString(R.string.notification_status_inprogress))
+                .addAction(android.R.drawable.ic_media_pause,
+                        context.getString(R.string.notification_action_pause),
+                        PendingIntent.getService(context, 0, pauseIntent, 0))
+                .build();
 
-        mNotificatoin = builder.build();
+        mInactiveNotification = new Notification.Builder(context)
+                .setSmallIcon(android.R.drawable.ic_media_pause)
+                .setContentTitle(context.getString(R.string.app_name))
+                .setContentIntent(PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0))
+                .setContentText(context.getString(R.string.notification_status_paused))
+                .addAction(android.R.drawable.ic_media_play,
+                        context.getString(R.string.notification_action_play),
+                        PendingIntent.getService(context, 0, resumeIntent, 0))
+                .build();
     }
 
-    private Notification mNotificatoin;
-
-    public Notification getNotificatoin() {
-        return mNotificatoin;
+    public Notification getNotification(NotificationAction action) {
+        if (action == NotificationAction.ACTION_INPROGRESS) {
+            return mActiveNotification;
+        } else {
+            return mInactiveNotification;
+        }
     }
 }

@@ -12,16 +12,31 @@ import org.leyfer.thesis.TouchLogger.service.TouchReaderService;
 import java.io.*;
 
 public class MainActivity extends Activity {
+
+    private boolean isRunning = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        Button button = (Button) findViewById(R.id.button);
+        final Button button = (Button) findViewById(R.id.button);
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent touchLoggerIntent = new Intent(getApplicationContext(), TouchReaderService.class);
-                startService(touchLoggerIntent);
+                if (isRunning) {
+                    Intent touchLoggerIntent = new Intent(getApplicationContext(), TouchReaderService.class);
+                    touchLoggerIntent.setAction(TouchReaderService.ACTION_STOP);
+                    startService(touchLoggerIntent);
+                    button.setText(R.string.start_service);
+                    isRunning = false;
+                } else {
+                    Intent touchLoggerIntent = new Intent(getApplicationContext(), TouchReaderService.class);
+                    touchLoggerIntent.setAction(TouchReaderService.ACTION_START);
+                    startService(touchLoggerIntent);
+                    button.setText(R.string.stop_service);
+                    isRunning = true;
+                }
             }
         });
     }
