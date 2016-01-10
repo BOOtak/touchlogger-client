@@ -37,7 +37,7 @@ public class TouchReaderService extends IntentService {
     private boolean isRunning = true;
     private JSONObject mGesture;
     private JSONArray mEvents;
-    private long mStartGestureTime;
+    private long mStartGestureTime = System.currentTimeMillis();
 
     public TouchReaderService() {
         super("TouchReaderService");
