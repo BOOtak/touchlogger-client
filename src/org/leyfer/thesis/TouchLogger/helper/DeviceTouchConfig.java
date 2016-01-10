@@ -23,7 +23,7 @@ public class DeviceTouchConfig {
             "/dev/input/event1",
             new Code("0003", "0000"),
             new Range(0, 9, 255),
-            new Type("002f", "0035", "0036", "003b", "0039")
+            new Type("002f", "0035", "0036", "0032", "0039")
     );
 
     // LG G2
