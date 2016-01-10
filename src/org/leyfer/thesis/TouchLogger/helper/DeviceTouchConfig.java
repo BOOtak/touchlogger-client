@@ -39,6 +39,6 @@ public class DeviceTouchConfig {
         put("HAMMERHEAD,AOSP ON HAMMERHEAD", hammerhead_Nexus_5_Config);
         put("UNIVERSAL5420,SM-N900", MSM8974_SM_N900_Config);
         put("MSM8974,SM-N9005", MSM8974_SM_N900_Config);
-        put("MSM8974,LG-D802", MSM8974_LG_D802_Config);
+        put("GALBI,LG-D802", MSM8974_LG_D802_Config);
     }};
 }
