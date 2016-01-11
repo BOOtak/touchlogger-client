@@ -37,7 +37,7 @@ public class TouchReaderService extends IntentService {
     private boolean isRunning = true;
     private JSONObject mGesture;
     private JSONArray mEvents;
-    private long mStartGestureTime = System.currentTimeMillis();
+    private long mStartGestureTime;
 
     public TouchReaderService() {
         super("TouchReaderService");
@@ -180,10 +180,10 @@ public class TouchReaderService extends IntentService {
 
             String prefix = event.getString("prefix");
             if (prefix.equals("DOWN")) {
-                mStartGestureTime = System.currentTimeMillis();
+                mStartGestureTime = event.getLong("timestamp");
             } else if (prefix.equals("UP")) {
                 mGesture.put("timestamp", System.currentTimeMillis());
-                mGesture.put("length", System.currentTimeMillis() - mStartGestureTime);
+                mGesture.put("length", event.getLong("timestamp") - mStartGestureTime);
                 mGesture.put("events", mEvents);
                 if (mActive) {
                     TouchSaver.getInstance(context).saveGesture(mGesture);
