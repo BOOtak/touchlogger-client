@@ -34,11 +34,20 @@ public class DeviceTouchConfig {
             new Type("002f", "0035", "0036", "003a", "0039")
     );
 
+    // Lenovo K900
+    public static final TouchConfig clovertrail_Lenovo_K900_ROW_Config = new TouchConfig(
+            "/dev/input/event0",
+            new Code("0003", "0000"),
+            new Range(0, 9, 255),
+            new Type("002f", "0035", "0036", "003b", "0039")
+    );
+
     public static final Map<String, TouchConfig> configMap = new HashMap<String, TouchConfig>() {{
         put("HAMMERHEAD,NEXUS 5", hammerhead_Nexus_5_Config);
         put("HAMMERHEAD,AOSP ON HAMMERHEAD", hammerhead_Nexus_5_Config);
         put("UNIVERSAL5420,SM-N900", MSM8974_SM_N900_Config);
         put("MSM8974,SM-N9005", MSM8974_SM_N900_Config);
         put("GALBI,LG-D802", MSM8974_LG_D802_Config);
+        put("CLOVERTRAIL,LENOVO K900_ROW", clovertrail_Lenovo_K900_ROW_Config);
     }};
 }
