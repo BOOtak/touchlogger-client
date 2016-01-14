@@ -17,7 +17,6 @@ public class DeviceTouchConfig {
             new Type("002f", "0035", "0036", "003a", "0039")
     );
 
-
     // Samsung galaxy note 3
     public static final TouchConfig MSM8974_SM_N900_Config = new TouchConfig(
             "/dev/input/event1",
@@ -42,6 +41,14 @@ public class DeviceTouchConfig {
             new Type("002f", "0035", "0036", "003b", "0039")
     );
 
+    // Galaxy S4 mini
+    public static final TouchConfig MSM8960_GT_I9190_Config = new TouchConfig(
+            "/dev/input/event2",
+            new Code("0003", "0000"),
+            new Range(0, 7, 255),
+            new Type("002f", "0035", "0036", "003a", "0039")
+    );
+
     public static final Map<String, TouchConfig> configMap = new HashMap<String, TouchConfig>() {{
         put("HAMMERHEAD,NEXUS 5", hammerhead_Nexus_5_Config);
         put("HAMMERHEAD,AOSP ON HAMMERHEAD", hammerhead_Nexus_5_Config);
@@ -49,5 +56,6 @@ public class DeviceTouchConfig {
         put("MSM8974,SM-N9005", MSM8974_SM_N900_Config);
         put("GALBI,LG-D802", MSM8974_LG_D802_Config);
         put("CLOVERTRAIL,LENOVO K900_ROW", clovertrail_Lenovo_K900_ROW_Config);
+        put("MSM8960,GT-I9190", MSM8960_GT_I9190_Config);
     }};
 }
