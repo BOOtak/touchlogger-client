@@ -53,14 +53,13 @@ public class MainActivity extends Activity {
     }
 
     @Override
-    protected void onStop() {
+    protected void onDestroy() {
         if (registered) {
             unregisterReceiver(touchServiceStateReceiver);
             registered = false;
         }
-        super.onStop();
+        super.onDestroy();
     }
-
 
     private void setAlarm() {
         AlarmManager alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
