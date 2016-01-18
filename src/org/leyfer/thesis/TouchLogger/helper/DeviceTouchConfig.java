@@ -81,6 +81,22 @@ public class DeviceTouchConfig {
             new Type("002f", "0035", "0036", "003a", "0039")
     );
 
+    // Galaxy note edge
+    public static final TouchConfig APQ8084_SM_N915F_Config = new TouchConfig(
+            "/dev/input/event1",
+            new Code("0003", "0000"),
+            new Range(0, 9, 255),
+            new Type("002f", "0035", "0036", "003b", "0039")
+    );
+
+    // Sony xperia SP cm12
+    public static final TouchConfig MSM8960_Xperia_SP_Config = new TouchConfig(
+            "/dev/input/event7",
+            new Code("0003", "0000"),
+            new Range(0, 10, 255),
+            new Type("002f", "0035", "0036", "003a", "0039")
+    );
+
     public static final Map<String, TouchConfig> configMap = new HashMap<String, TouchConfig>() {{
         put("HAMMERHEAD,NEXUS 5", hammerhead_Nexus_5_Config);
         put("HAMMERHEAD,NEXUS 5 CAF", hammerhead_Nexus_5_Config);
@@ -94,5 +110,7 @@ public class DeviceTouchConfig {
         put("MSM8960,GT-I9190", MSM8960_GT_I9190_Config);
         put("GOLFU,HTC DESIRE C", GOLFU_HTC_DESIRE_C_Config);
         put("FUJI,XPERIA S", fuji_Xperia_S_Config);
+        put("APQ8084,SM-N915F", APQ8084_SM_N915F_Config);
+        put("MSM8960,XPERIA SP", MSM8960_Xperia_SP_Config);
     }};
 }
