@@ -57,10 +57,18 @@ public class DeviceTouchConfig {
             new Type("002f", "0035", "0036", "0032", "0039")
     );
 
+    // Samsung Galaxy Grand Duos
+    public static final TouchConfig CAPRI_GT_I9082_Config = new TouchConfig(
+            "/dev/input/event4",
+            new Code("0003", "0000"),
+            new Range(0, 31, 255),
+            new Type("002f", "0035", "0036", "003a", "0039")
+    );
 
     public static final Map<String, TouchConfig> configMap = new HashMap<String, TouchConfig>() {{
         put("HAMMERHEAD,NEXUS 5", hammerhead_Nexus_5_Config);
-        put("HAMMERHEAD,Nexus 5 CAF", hammerhead_Nexus_5_Config);
+        put("HAMMERHEAD,NEXUS 5 CAF", hammerhead_Nexus_5_Config);
+        put("CAPRI,GT-I9082", CAPRI_GT_I9082_Config);
         put("MSM8226,SM-G7102", MSM8226_SM_G7102_Config);
         put("HAMMERHEAD,AOSP ON HAMMERHEAD", hammerhead_Nexus_5_Config);
         put("UNIVERSAL5420,SM-N900", MSM8974_SM_N900_Config);
