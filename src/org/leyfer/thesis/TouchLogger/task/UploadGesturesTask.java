@@ -6,6 +6,7 @@ import android.util.Log;
 
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 public class UploadGesturesTask extends AsyncTask<Void, Void, Void> {
@@ -41,8 +42,8 @@ public class UploadGesturesTask extends AsyncTask<Void, Void, Void> {
                         } else {
                             Log.w(TAG, String.format("Unable to delete file %s", logFile.getName()));
                         }
-                    } catch (FileNotFoundException e) {
-                            e.printStackTrace();
+                    } catch (IOException e) {
+                        Log.e(TAG, String.format("Unable to send data: %s", e.getMessage()));
                     }
                 } else {
                     Log.e(TAG, String.format("LogFile %s listed in fileList but does not exist", logFile.getName()));
@@ -52,34 +53,27 @@ public class UploadGesturesTask extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
-    private void uploadFile(String link, File file) throws FileNotFoundException {
+    private void uploadFile(String link, File file) throws IOException {
         HttpURLConnection connection;
         BufferedOutputStream outStream = null;
         InputStream inStream = new FileInputStream(file);
 
         URL url;
 
-        try
-        {
-            url = new URL(link);
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setDoOutput(true);
-            connection.setDoInput(true);
-            connection.setRequestProperty("Content-Type", "application/octet-stream");
-            connection.setRequestMethod("POST");
+        url = new URL(link);
+        connection = (HttpURLConnection) url.openConnection();
+        connection.setDoOutput(true);
+        connection.setDoInput(true);
+        connection.setRequestProperty("Content-Type", "application/octet-stream");
+        connection.setRequestMethod("POST");
 
-            outStream = new BufferedOutputStream(connection.getOutputStream());
-            copyStream(inStream, outStream);
-            outStream.close();
-            String response = readStream(connection.getInputStream());
-            Log.d(TAG, String.format("Received response: %s", response));
-            connection.disconnect();
-            Log.d(TAG, "Gesture data sent successfully");
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-        }
+        outStream = new BufferedOutputStream(connection.getOutputStream());
+        copyStream(inStream, outStream);
+        outStream.close();
+        String response = readStream(connection.getInputStream());
+        Log.d(TAG, String.format("Received response: %s", response));
+        connection.disconnect();
+        Log.d(TAG, "Gesture data sent successfully");
     }
 
     private void copyStream(InputStream input, OutputStream output)
