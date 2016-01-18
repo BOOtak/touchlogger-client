@@ -73,6 +73,14 @@ public class DeviceTouchConfig {
             new Type("002f", "0035", "0036", "0032", "0039")
     );
 
+    // Xperia S
+    public static final TouchConfig fuji_Xperia_S_Config = new TouchConfig(
+            "/dev/input/event5",
+            new Code("0003", "0000"),
+            new Range(0, 9, 255),
+            new Type("002f", "0035", "0036", "003a", "0039")
+    );
+
     public static final Map<String, TouchConfig> configMap = new HashMap<String, TouchConfig>() {{
         put("HAMMERHEAD,NEXUS 5", hammerhead_Nexus_5_Config);
         put("HAMMERHEAD,NEXUS 5 CAF", hammerhead_Nexus_5_Config);
@@ -85,5 +93,6 @@ public class DeviceTouchConfig {
         put("CLOVERTRAIL,LENOVO K900_ROW", clovertrail_Lenovo_K900_ROW_Config);
         put("MSM8960,GT-I9190", MSM8960_GT_I9190_Config);
         put("GOLFU,HTC DESIRE C", GOLFU_HTC_DESIRE_C_Config);
+        put("FUJI,XPERIA S", fuji_Xperia_S_Config);
     }};
 }
